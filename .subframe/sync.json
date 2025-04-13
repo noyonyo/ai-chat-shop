@@ -1,0 +1,5 @@
+{
+  "directory": "./app/components/ui",
+  "importAlias": "@components/*",
+  "projectId": "5d6db2dff5e5"
+}
