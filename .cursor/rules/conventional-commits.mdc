@@ -1,0 +1,116 @@
+---
+description: Git commit guidelines
+globs: 
+alwaysApply: false
+---
+# Conventional Commits Guidelines
+
+## Commit Message Structure
+
+```
+<type>(<scope>): <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+## Types
+
+1. Primary Types:
+   - `feat`: New feature
+   - `fix`: Bug fix
+   - `docs`: Documentation changes
+   - `style`: Code style changes (formatting, semicolons, etc)
+   - `refactor`: Code refactoring
+   - `test`: Adding or modifying tests
+   - `chore`: Maintenance tasks
+
+2. Additional Types:
+   - `perf`: Performance improvements
+   - `ci`: CI/CD changes
+   - `build`: Build system changes
+   - `revert`: Reverting changes
+
+## Examples
+
+```
+# Feature
+feat(auth): implement OAuth2 authentication
+
+# Bug fix
+fix(api): resolve race condition in user session
+
+# Breaking change
+feat(api)!: change authentication endpoint response format
+
+BREAKING CHANGE: Authentication response now includes refresh token
+
+# Multiple scopes
+feat(api,auth): add rate limiting to auth endpoints
+
+# Documentation
+docs(readme): update installation instructions
+
+# Refactoring
+refactor(core): simplify error handling logic
+```
+
+## Guidelines
+
+1. Commit Description:
+   - Use imperative mood ("add" not "added")
+   - Keep first line under 72 characters
+   - Don't end with period
+   - Be specific and clear
+
+2. Scope:
+   - Use lowercase
+   - Keep it short and consistent
+   - Use module/feature names
+
+3. Breaking Changes:
+   - Add `!` after type/scope
+   - Include `BREAKING CHANGE:` in body
+   - Explain the changes in detail
+
+4. Body:
+   - Use to explain "why" not "what"
+   - Wrap at 72 characters
+   - Leave blank line after subject
+
+5. Footer:
+   - Reference issues/PRs
+   - Format: `Fixes #123` or `Closes #456`
+   - One footer per line
+
+## Common Patterns
+
+```
+# Fixing multiple issues
+fix(auth): resolve login timeout issues
+
+Fixes #123
+Fixes #456
+
+# Breaking change with migration notes
+feat(db)!: switch to PostgreSQL
+
+BREAKING CHANGE: MySQL is no longer supported
+
+Migration guide:
+1. Backup existing data
+2. Run migration script
+3. Update connection strings
+
+# Reverting a commit
+revert: feat(auth): implement OAuth2 authentication
+
+This reverts commit abc123def456.
+
+# Performance improvement
+perf(queries): optimize database indexes
+
+Improves query performance by 50%
+Fixes #789
+``` 

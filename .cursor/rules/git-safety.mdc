@@ -1,0 +1,150 @@
+---
+description: Use when requested to perform git actions
+globs: 
+alwaysApply: false
+---
+# Git Safety Guidelines
+
+## Branch Management
+
+1. Protected Branches:
+   - `main`: Production-ready code
+   - Never force push to protected branches
+   - Require pull request reviews
+
+2. Branch Naming:
+```
+# Feature branches
+feature/user-authentication
+feature/JIRA-123-payment-integration
+
+# Bug fix branches
+fix/login-timeout
+fix/JIRA-456-memory-leak
+
+# Release branches
+release/v1.2.0
+release/2024-03-15
+
+# Hotfix branches
+hotfix/v1.2.1
+hotfix/critical-security-fix
+```
+
+## Safe Commands and Practices
+
+1. Before Pushing:
+```bash
+# Review changes
+git diff
+
+# Check status
+git status
+
+# Review commits
+git log --oneline -n 5
+
+# Run tests
+npm test  # or appropriate test command
+```
+
+2. Safe Rebase:
+```bash
+# Update main first
+git checkout main
+git pull origin main
+
+# Rebase feature branch
+git checkout feature/branch
+git rebase main
+
+# If conflicts occur
+git rebase --abort  # to safely abort
+```
+
+3. Stashing Changes:
+```bash
+# Stash with description
+git stash push -m "WIP: feature implementation"
+
+# List stashes
+git stash list
+
+# Apply specific stash
+git stash apply stash@{0}
+
+# Drop stash after applying
+git stash drop stash@{0}
+```
+
+## Safety Measures
+
+1. Pre-commit Hooks:
+   - Run linters
+   - Run tests
+   - Check commit message format
+   - Prevent sensitive data commits
+
+2. Sensitive Data Protection:
+```bash
+# Remove sensitive file from history
+git filter-branch --force --index-filter \
+  "git rm --cached --ignore-unmatch path/to/sensitive-file" \
+  --prune-empty --tag-name-filter cat -- --all
+
+# Add to .gitignore
+echo "sensitive-file" >> .gitignore
+```
+
+3. Recovery Procedures:
+```bash
+# Undo last commit (safe)
+git reset --soft HEAD^
+
+# Undo uncommitted changes
+git checkout -- file.txt
+
+# Create backup branch
+git branch backup-$(date +%Y%m%d)
+```
+
+## Code Review Guidelines
+
+1. Before Requesting Review:
+   - Run all tests
+   - Update documentation
+   - Self-review changes
+   - Check for sensitive data
+
+2. Review Checklist:
+   - Security implications
+   - Performance impact
+   - Breaking changes
+   - Test coverage
+   - Documentation updates
+
+## Emergency Procedures
+
+1. Reverting Changes:
+```bash
+# Revert last commit
+git revert HEAD
+
+# Revert specific commit
+git revert abc123def
+
+# Create emergency branch
+git checkout -b hotfix/emergency-fix main
+```
+
+2. Data Recovery:
+```bash
+# Find lost commits
+git reflog
+
+# Recover deleted branch
+git checkout -b recovered-branch commit-hash
+
+# Recover stashed changes
+git fsck --unreachable | grep commit | cut -d' ' -f3 | xargs git log
+``` 

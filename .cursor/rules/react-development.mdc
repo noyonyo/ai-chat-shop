@@ -1,0 +1,118 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# React Development Guidelines
+
+## Component Structure
+
+1. Component Organization:
+   - Use functional components with hooks
+   - Keep components small and focused
+   - Follow Single Responsibility Principle
+
+2. Props and TypeScript:
+```typescript
+// Good - Type your props
+interface UserCardProps {
+  name: string;
+  email: string;
+  role?: 'admin' | 'user';
+}
+
+const UserCard: React.FC<UserCardProps> = ({ name, email, role = 'user' }) => {
+  return (
+    <div>
+      <h2>{name}</h2>
+      <p>{email}</p>
+      <span>{role}</span>
+    </div>
+  );
+};
+```
+
+3. Hooks Usage:
+```typescript
+// Good - Custom hook
+function useUser(userId: string) {
+  const [user, setUser] = useState<User | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchUser(userId)
+      .then(data => setUser(data))
+      .finally(() => setLoading(false));
+  }, [userId]);
+
+  return { user, loading };
+}
+```
+
+## Best Practices
+
+1. State Management:
+   - Use local state for component-specific data
+   - Lift state up when needed by multiple components
+   - Consider context for global state
+
+2. Performance Optimization:
+```typescript
+// Good - Memoization
+const MemoizedComponent = React.memo(({ data }) => {
+  return <div>{data.map(item => (
+    <Item key={item.id} {...item} />
+  ))}</div>;
+});
+
+// Good - Callback memoization
+const handleClick = useCallback(() => {
+  // handle click logic
+}, [/* dependencies */]);
+```
+
+3. Event Handling:
+```typescript
+// Good - Typed event handlers
+const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  // handle form submission
+};
+
+// Good - Controlled components
+const [value, setValue] = useState('');
+const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setValue(e.target.value);
+};
+```
+
+4. Component Composition:
+```typescript
+// Good - Use composition over inheritance
+const Button: React.FC<ButtonProps> = ({ children, variant, ...props }) => {
+  return (
+    <button className={`btn btn-${variant}`} {...props}>
+      {children}
+    </button>
+  );
+};
+```
+
+## Testing
+
+1. Component Testing:
+```typescript
+// Good - Test component rendering
+test('renders user information', () => {
+  render(<UserCard name="John" email="john@example.com" />);
+  expect(screen.getByText('John')).toBeInTheDocument();
+});
+
+// Good - Test user interactions
+test('handles click events', () => {
+  const handleClick = jest.fn();
+  render(<Button onClick={handleClick}>Click me</Button>);
+  userEvent.click(screen.getByText('Click me'));
+  expect(handleClick).toHaveBeenCalled();
+});
+``` 

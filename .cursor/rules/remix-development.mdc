@@ -1,0 +1,93 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Remix Development Guidelines
+
+## Project Structure
+
+1. Follow the Remix file-based routing convention:
+   - Place route components in `app/routes`
+   - Use the `$` prefix for dynamic segments
+   - Use `_` prefix for layout routes
+   - Use `.` for nested routes
+
+2. Data Flow:
+```typescript
+// Good - Loader function
+export async function loader({ request, params }: LoaderArgs) {
+  return json({ data: await getData(params.id) });
+}
+
+// Good - Action function
+export async function action({ request }: ActionArgs) {
+  const formData = await request.formData();
+  return json(await processData(formData));
+}
+```
+
+3. Error Handling:
+```typescript
+// Good - Error Boundary
+export function ErrorBoundary({ error }: { error: Error }) {
+  return (
+    <div className="error-container">
+      <h1>Error</h1>
+      <p>{error.message}</p>
+    </div>
+  );
+}
+```
+
+4. Resource Routes:
+- Place resource routes in `app/routes/resources/`
+- Use for API endpoints and non-UI routes
+
+5. Models and Services:
+- Place data models in `app/models/`
+- Place services in `app/services/`
+- Keep business logic separate from components
+
+6. Performance:
+- Use `prefetch="intent"` for anticipated navigations
+- Implement optimistic UI updates
+- Use `headers` export for proper caching
+
+## Common Patterns
+
+1. Form Submissions:
+```typescript
+// Good
+export default function MyForm() {
+  return (
+    <Form method="post">
+      <input type="text" name="title" required />
+      <button type="submit">Submit</button>
+    </Form>
+  );
+}
+```
+
+2. Data Loading:
+```typescript
+// Good - Using useLoaderData
+export default function Route() {
+  const { data } = useLoaderData<typeof loader>();
+  return <div>{data.title}</div>;
+}
+```
+
+3. Client-Side Navigation:
+```typescript
+// Good
+import { Link } from "@remix-run/react";
+
+export default function Navigation() {
+  return (
+    <Link to="/posts" prefetch="intent">
+      View Posts
+    </Link>
+  );
+}
+``` 

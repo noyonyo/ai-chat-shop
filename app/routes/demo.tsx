@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { DefaultPageLayout } from "@components/layouts/DefaultPageLayout";
 import { Button } from "@components/components/Button";
 import { FeatherCheck } from "@subframe/core";
@@ -14,15 +14,57 @@ import { Alert } from "@components/components/Alert";
 import { Avatar } from "@components/components/Avatar";
 import { FeatherLoader } from "@subframe/core";
 import { FeatherClock } from "@subframe/core";
-import { FeatherSend } from "@subframe/core";
+import { FeatherSend, } from "@subframe/core";
+import Joyride, { Step } from 'react-joyride';
 
 function Demo() {
+    const [runTour, setRunTour] = useState(true);
+
+    const steps: Step[] = [
+        {
+            target: '[data-tour="chat-area"]',
+            content: 'Meet your AI Assistant! This powerful AI can understand and execute complex tasks through natural conversation. In this demo, watch how it handles a shopping scenario - from understanding preferences to applying filters and completing the purchase. The AI can be customized to automate any workflow in your application.',
+            disableBeacon: true,
+            placement: 'left',
+        },
+        {
+            target: '[data-tour="actions-log"]',
+            content: 'The AI provides real-time visibility into its actions, showing you exactly what it\'s doing on your behalf. You can see it navigating pages, applying filters, and interacting with external services - all while keeping you informed of its progress.',
+        },
+        {
+            target: '[data-tour="filters-area"]',
+            content: 'Watch as the AI automatically applies relevant filters based on your request to find the perfect product for you.',
+        },
+
+        {
+            target: '[data-tour="payment-area"]',
+            content: 'Watch how the AI automatically interacts with external systems like AB Qallets to retrieve and fill in your payment details. The AI can seamlessly communicate with various services and APIs, handling complex interactions while maintaining security - no manual form filling needed!',
+        }
+    ];
+
     return (
         <DefaultPageLayout>
+            <Joyride
+                steps={steps}
+                run={runTour}
+                continuous={true}
+                showSkipButton={true}
+                styles={{
+                    options: {
+                        primaryColor: '#4F46E5',
+                        zIndex: 1000,
+                    }
+                }}
+                callback={(data) => {
+                    if (data.status === 'finished' || data.status === 'skipped') {
+                        setRunTour(false);
+                    }
+                }}
+            />
             <div className="flex h-full w-full flex-col items-start bg-default-background">
                 <div className="flex w-full grow shrink-0 basis-0 items-start">
                     <div className="flex grow shrink-0 basis-0 flex-col items-start self-stretch overflow-auto">
-                        <div className="flex w-full flex-col items-start gap-6 border-b border-solid border-neutral-border px-6 py-6">
+                        <div className="flex w-full flex-col items-start gap-6 border-b border-solid border-neutral-border px-6 py-6" data-tour="filters-area">
                             <div className="flex w-full items-center gap-2">
                                 <Button
                                     icon={<FeatherCheck />}
@@ -92,7 +134,7 @@ function Demo() {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex w-full flex-col items-start gap-6 px-6 py-6">
+                        <div className="flex w-full flex-col items-start gap-6 px-6 py-6" data-tour="payment-area">
                             <Progress value={75} />
                             <div className="flex w-full flex-col items-start gap-6">
                                 <div className="flex w-full flex-col items-start gap-1">
@@ -180,7 +222,7 @@ function Demo() {
                             </div>
                         </div>
                     </div>
-                    <div className="flex w-96 flex-none flex-col items-start self-stretch border-l border-solid border-neutral-border">
+                    <div className="flex w-96 flex-none flex-col items-start self-stretch border-l border-solid border-neutral-border" data-tour="chat-area">
                         <div className="flex w-full flex-col items-start gap-6 border-b border-solid border-neutral-border px-6 py-6">
                             <span className="text-heading-3 font-heading-3 text-default-font">
                                 Shopping Assistant
@@ -220,7 +262,7 @@ function Demo() {
                                     </div>
                                 </div>
                                 <div className="flex w-full items-end justify-end gap-2">
-                                    <div className="flex grow shrink-0 basis-0 flex-col items-start gap-2 rounded-md border border-solid border-neutral-border bg-default-background px-4 py-4">
+                                    <div className="flex grow shrink-0 basis-0 flex-col items-start gap-2 rounded-md border border-solid border-neutral-border bg-default-background px-4 py-4" data-tour="actions-log">
                                         <div className="flex w-full items-center gap-2">
                                             <IconWithBackground variant="success" size="small" />
                                             <span className="text-body font-body text-default-font">
