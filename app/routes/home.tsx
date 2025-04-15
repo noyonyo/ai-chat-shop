@@ -62,11 +62,11 @@ function Home() {
             </div>
             <div className="flex w-full flex-col items-center justify-center px-6 py-40 bg-gradient-to-b from-transparent via-neutral-100 to-transparent">
                 <div className="flex w-full max-w-[1024px] flex-col items-start gap-16">
-                    <div className="flex w-full flex-wrap items-end gap-12">
-                        <span className="grow shrink-0 basis-0 font-['Inter'] text-[56px] font-[600] leading-[62px] text-default-font -tracking-[0.04em]">
+                    <div className="flex w-full flex-col md:flex-wrap md:flex-row items-end gap-12">
+                        <span className="w-full md:grow md:shrink-0 md:basis-0 font-['Inter'] text-[56px] font-[600] leading-[62px] text-default-font -tracking-[0.04em]">
                             Let AI handle the complexity
                         </span>
-                        <span className="grow shrink-0 basis-0 font-['Inter'] text-[17px] font-[500] leading-[24px] text-subtext-color -tracking-[0.01em]">
+                        <span className="w-full md:grow md:shrink-0 md:basis-0 font-['Inter'] text-[17px] font-[500] leading-[24px] text-subtext-color -tracking-[0.01em]">
                             Our intelligent interfaces learn, adapt, and work autonomously to
                             streamline your workflows and deliver faster value to customers.
                         </span>
